@@ -26,7 +26,7 @@
       </table>
     </div>
     <div class="game-btns">
-      <button @click="checkResult">提交答案</button>
+      <button @click="handleTrySubmit">提交答案</button>
       <span v-if="msg" :style="{color: msgColor}">{{ msg }}</span>
       <span v-if="timeStr">用时：{{ timeStr }}</span>
     </div>
@@ -35,7 +35,7 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue';
 const props = defineProps({ user: String });
-const emit = defineEmits(['finishGame']);
+const emit = defineEmits(['finishGame', 'trySubmit']);
 
 const difficulty = ref('easy');
 const board = ref([]); // 正确答案
@@ -120,6 +120,11 @@ function checkResult() {
   msg.value = '恭喜通关！';
   msgColor.value = 'green';
   emit('finishGame', { difficulty: difficulty.value, time: time.value });
+}
+
+function handleTrySubmit() {
+  emit('trySubmit');
+  checkResult();
 }
 
 function tdClass(i, j) {
