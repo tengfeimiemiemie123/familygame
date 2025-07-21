@@ -8,17 +8,16 @@ const connectDB = async () => {
       return;
     }
 
-    // 使用新的连接字符串格式
-    const uri = 'mongodb+srv://tengfei726:AxGmXE7vQQM41MMR@cluster0.06h3msu.mongodb.net/familygame?retryWrites=true&w=majority&appName=Cluster0';
+    // 使用环境变量或默认连接字符串
+    const uri = process.env.MONGODB_URI || 'mongodb+srv://tengfei726:AxGmXE7vQQM41MMR@cluster0.06h3msu.mongodb.net/familygame?retryWrites=true&w=majority&appName=Cluster0';
     
     console.log('正在连接到数据库...');
     await mongoose.connect(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 5000, // 超时时间
-      socketTimeoutMS: 45000, // Socket 超时
-      connectTimeoutMS: 10000, // 连接超时
-      // 自动重连配置
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      connectTimeoutMS: 10000,
       autoIndex: true,
       autoCreate: true,
       maxPoolSize: 10,
