@@ -32,7 +32,9 @@ function showForm(type) {
     }
 
     try {
-      const url = type === 'login' ? '/api/login' : '/api/register';
+      // 获取当前域名
+      const baseUrl = window.location.origin;
+      const url = `${baseUrl}/api/${type}`;
       console.log('发送请求到:', url);
       console.log('请求数据:', { username, password: '***' });
 
