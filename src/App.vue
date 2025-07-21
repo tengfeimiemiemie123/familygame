@@ -7,9 +7,11 @@
         <span v-if="user">欢迎，{{ user }}</span>
         <button v-if="!user" @click="showLogin = true">登录/注册</button>
         <button v-if="user" @click="logout">登出</button>
-        <button @click="testSudoku" style="margin-left:1rem;">测试</button>
       </div>
     </header>
+    <div style="text-align:center;margin:1rem 0;">
+      <button @click="testSudoku">测试（只留一个空位）</button>
+    </div>
     <main>
       <SudokuGame :user="user" @finishGame="onFinishGame" ref="sudokuRef" />
       <RankBoard :user="user" :difficulty="difficulty" ref="rankRef" />

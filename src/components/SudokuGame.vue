@@ -14,7 +14,7 @@
       <table>
         <tr v-for="(row, i) in board" :key="i">
           <td v-for="(cell, j) in row" :key="j"
-            :style="getTdStyle(i, j)">
+            :class="tdClass(i, j)">
             <input
               v-model="userBoard[i][j]"
               :readonly="!!initBoard[i][j]"
@@ -122,14 +122,13 @@ function checkResult() {
   emit('finishGame', { difficulty: difficulty.value, time: time.value });
 }
 
-function getTdStyle(i, j) {
-  // 3x3宫格加粗
-  return {
-    'border-top': i % 3 === 0 ? '2px solid #333' : '',
-    'border-left': j % 3 === 0 ? '2px solid #333' : '',
-    'border-right': j === 8 ? '2px solid #333' : '',
-    'border-bottom': i === 8 ? '2px solid #333' : ''
-  };
+function tdClass(i, j) {
+  return [
+    i % 3 === 0 ? 'thick-top' : '',
+    j % 3 === 0 ? 'thick-left' : '',
+    i === 8 ? 'thick-bottom' : '',
+    j === 8 ? 'thick-right' : ''
+  ];
 }
 // 测试用：只留一个空位
 function setTestBoard() {
@@ -166,7 +165,16 @@ watch(difficulty, resetGame);
 .difficulty-bar { margin-bottom: 1rem; }
 .board { margin: 1rem 0; }
 table { border-collapse: collapse; }
-td { border: 1px solid #bbb; width: 36px; height: 36px; text-align: center; }
+td {
+  border: 1px solid #bbb;
+  width: 36px;
+  height: 36px;
+  text-align: center;
+}
+.thick-top { border-top: 2.5px solid #222 !important; }
+.thick-left { border-left: 2.5px solid #222 !important; }
+.thick-bottom { border-bottom: 2.5px solid #222 !important; }
+.thick-right { border-right: 2.5px solid #222 !important; }
 input { width: 34px; height: 34px; text-align: center; font-size: 18px; border: none; background: none; }
 input[readonly] { background: #eee; color: #888; }
 .game-btns { margin-top: 1rem; }
