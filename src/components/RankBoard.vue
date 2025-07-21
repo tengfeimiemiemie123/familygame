@@ -29,6 +29,7 @@ const difficulties = [
 ];
 const tab = ref('easy');
 const ranks = ref([]);
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 function formatTime(sec) {
   const m = Math.floor(sec / 60).toString().padStart(2, '0');
@@ -39,7 +40,7 @@ function formatTime(sec) {
 async function fetchRanks() {
   ranks.value = [];
   try {
-    const res = await fetch(`/api/rank?difficulty=${tab.value}`);
+    const res = await fetch(`${API_BASE}/rank?difficulty=${tab.value}`);
     const data = await res.json();
     if (data.code === 0) ranks.value = data.list;
   } catch {}

@@ -20,6 +20,7 @@ const username = ref('');
 const password = ref('');
 const msg = ref('');
 const isError = ref(false);
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 async function submit(type) {
   msg.value = '';
@@ -33,7 +34,7 @@ async function submit(type) {
 
   try {
     console.log(`发送${type}请求...`);
-    const res = await fetch(`/api/${type}`, {
+    const res = await fetch(`${API_BASE}/${type}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 

@@ -35,6 +35,7 @@ const sudokuRef = ref();
 const rankRef = ref();
 const tryCount = ref(0);
 const showTestBtn = ref(false);
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 function changeTheme(newTheme) {
   theme.value = newTheme;
@@ -53,7 +54,7 @@ async function onFinishGame({ difficulty: diff, time }) {
   // 自动提交成绩
   if (user.value) {
     try {
-      await fetch('/api/record', {
+      await fetch(`${API_BASE}/record`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: user.value, difficulty: diff, time })
