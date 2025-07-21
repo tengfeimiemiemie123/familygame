@@ -4,5 +4,8 @@
   "private": true,
   "dependencies": {
     "mongoose": "^7.6.3"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   }
 } 
