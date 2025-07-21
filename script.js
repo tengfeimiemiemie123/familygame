@@ -30,24 +30,45 @@ function showForm(type) {
       msg.textContent = '请输入用户名和密码';
       return;
     }
-    const url = type === 'login' ? '/api/login' : '/api/register';
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    });
-    const data = await res.json();
-    if (data.code === 0) {
-      if (type === 'login') {
-        localStorage.setItem('username', data.username || username);
-        showUserInfo();
+
+    try {
+      const url = type === 'login' ? '/api/login' : '/api/register';
+      console.log('发送请求到:', url);
+      console.log('请求数据:', { username, password: '***' });
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+      });
+
+      console.log('响应状态:', response.status);
+      const data = await response.json();
+      console.log('响应数据:', data);
+
+      if (data.code === 0) {
+        if (type === 'login') {
+          localStorage.setItem('username', data.username || username);
+          showUserInfo();
+          formArea.style.display = 'none';
+        } else {
+          msg.textContent = '注册成功，请登录';
+          setTimeout(() => {
+            showForm('login');
+          }, 1000);
+        }
       } else {
-        msg.textContent = '注册成功，请登录';
+        msg.textContent = data.msg || '操作失败';
       }
-    } else {
-      msg.textContent = data.msg || '操作失败';
+    } catch (error) {
+      console.error('请求错误:', error);
+      msg.textContent = '服务器错误，请稍后再试';
     }
   };
+  
   document.getElementById('cancel-btn').onclick = () => {
     formArea.style.display = 'none';
   };
