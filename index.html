@@ -99,6 +99,10 @@
     </div>
 
     <script>
+        // API 基础 URL
+        const API_BASE_URL = window.location.origin;
+        console.log('API Base URL:', API_BASE_URL);
+
         // 检查登录状态
         function checkLoginStatus() {
             const username = localStorage.getItem('username');
@@ -149,16 +153,25 @@
             const password = document.getElementById('password-input').value;
             const errorMsg = document.getElementById('error-msg');
             
+            if (!username || !password) {
+                errorMsg.textContent = '请输入用户名和密码';
+                return;
+            }
+
             try {
-                const response = await fetch(`/api/${type}`, {
+                console.log('发送请求:', `${API_BASE_URL}/api/${type}`);
+                const response = await fetch(`${API_BASE_URL}/api/${type}`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify({ username, password })
                 });
                 
+                console.log('响应状态:', response.status);
                 const data = await response.json();
+                console.log('响应数据:', data);
                 
                 if (data.code === 0) {
                     if (type === 'login') {
@@ -172,9 +185,10 @@
                         }, 1000);
                     }
                 } else {
-                    errorMsg.textContent = data.msg;
+                    errorMsg.textContent = data.msg || '操作失败';
                 }
             } catch (error) {
+                console.error('请求错误:', error);
                 errorMsg.textContent = '服务器错误，请稍后再试';
             }
         }
