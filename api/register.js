@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const User = require('./models');
 
 // MongoDB 连接 URI
-const MONGODB_URI = 'mongodb+srv://tengfei726:AxGmXE7vQQM41MMR@cluster0.qqvhpzj.mongodb.net/familygame?retryWrites=true&w=majority';
+const MONGODB_URI = process.env.MONGODB_URI;
 
 module.exports = async (req, res) => {
   try {
