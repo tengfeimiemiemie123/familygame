@@ -553,35 +553,53 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('login-btn').onclick = async function() {
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value;
+    const btn = document.getElementById('login-btn');
+    btn.disabled = true;
+    btn.textContent = '正在登录...';
     try {
       await apiLogin(username, password);
       currentUser = username;
       localStorage.setItem('sudoku_user', username);
       updateUserInfoUI();
-      hideUserModal();
+      document.getElementById('user-modal-msg').style.color = '#38a169';
+      document.getElementById('user-modal-msg').textContent = '登录成功！';
+      setTimeout(() => { hideUserModal(); document.getElementById('user-modal-msg').style.color = '#e53e3e'; }, 1500);
       if (pendingRecord) {
         await uploadRecordAndShowRank(...pendingRecord);
         pendingRecord = null;
       }
     } catch(e) {
-      document.getElementById('user-modal-msg').textContent = e.message;
+      document.getElementById('user-modal-msg').style.color = '#e53e3e';
+      document.getElementById('user-modal-msg').textContent = e.message || '网络异常，请稍后重试';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '登录';
     }
   };
   document.getElementById('register-btn').onclick = async function() {
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value;
+    const btn = document.getElementById('register-btn');
+    btn.disabled = true;
+    btn.textContent = '正在注册...';
     try {
       await apiRegister(username, password);
       currentUser = username;
       localStorage.setItem('sudoku_user', username);
       updateUserInfoUI();
-      hideUserModal();
+      document.getElementById('user-modal-msg').style.color = '#38a169';
+      document.getElementById('user-modal-msg').textContent = '注册成功！';
+      setTimeout(() => { hideUserModal(); document.getElementById('user-modal-msg').style.color = '#e53e3e'; }, 1500);
       if (pendingRecord) {
         await uploadRecordAndShowRank(...pendingRecord);
         pendingRecord = null;
       }
     } catch(e) {
-      document.getElementById('user-modal-msg').textContent = e.message;
+      document.getElementById('user-modal-msg').style.color = '#e53e3e';
+      document.getElementById('user-modal-msg').textContent = e.message || '网络异常，请稍后重试';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '注册';
     }
   };
   document.getElementById('close-rank').onclick = hideRankModal;
