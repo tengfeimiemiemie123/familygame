@@ -1,0 +1,95 @@
+/* Reset & Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Theme Colors */
+:root {
+  /* 暖色主题 */
+  .warm {
+    --bg-primary: #fff7e6;
+    --text-primary: #7c4a00;
+    --btn-bg: #ffa940;
+    --btn-text: #fff;
+    --input-border: #ffd591;
+  }
+
+  /* 冷色主题 */
+  .cool {
+    --bg-primary: #e6f7ff;
+    --text-primary: #005c7c;
+    --btn-bg: #40a9ff;
+    --btn-text: #fff;
+    --input-border: #91d5ff;
+  }
+
+  /* 暗色主题 */
+  .dark {
+    --bg-primary: #232323;
+    --text-primary: #eee;
+    --btn-bg: #444;
+    --btn-text: #fff;
+    --input-border: #666;
+  }
+}
+
+/* Button Styles */
+button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background: var(--btn-bg, #1890ff);
+  color: var(--btn-text, #fff);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Input Styles */
+input, select {
+  padding: 0.5rem;
+  border: 1px solid var(--input-border, #d9d9d9);
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--btn-bg, #1890ff);
+}
+
+/* Layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+} 
