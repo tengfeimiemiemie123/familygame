@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const User = require('./models');
 
 // MongoDB 连接 URI
-const MONGODB_URI = `mongodb+srv://tengfei726:AxGmXE7vQQM41MMR@cluster0.mongodb.net/familygame?retryWrites=true&w=majority`;
+const MONGODB_URI = 'mongodb+srv://tengfei726:AxGmXE7vQQM41MMR@cluster0.qqvhpzj.mongodb.net/familygame?retryWrites=true&w=majority';
 
 module.exports = async (req, res) => {
   try {
@@ -47,6 +47,6 @@ module.exports = async (req, res) => {
     res.json({ code: 0, msg: '注册成功' });
   } catch (error) {
     console.error('注册错误:', error);
-    res.status(500).json({ code: 1, msg: '服务器错误' });
+    res.status(500).json({ code: 1, msg: '服务器错误: ' + error.message });
   }
 }; 
