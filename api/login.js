@@ -2,10 +2,14 @@ const mongoose = require('mongoose');
 const User = require('./models');
 
 // MongoDB 连接 URI
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://tengfei726:AxGmXE7vQQM41MMR@cluster0.06h3msu.mongodb.net/familygame?retryWrites=true&w=majority&appName=Cluster0';
 
 module.exports = async (req, res) => {
   try {
+    console.log('登录请求开始');
+    console.log('环境变量 MONGODB_URI:', process.env.MONGODB_URI ? '已设置' : '未设置');
+    console.log('使用的连接字符串:', MONGODB_URI);
+
     // 处理 CORS
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -23,12 +27,15 @@ module.exports = async (req, res) => {
       return res.status(405).json({ code: 1, msg: '方法不允许' });
     }
 
+    console.log('开始连接数据库...');
     // 连接数据库
     if (!mongoose.connections[0].readyState) {
       await mongoose.connect(MONGODB_URI);
+      console.log('数据库连接成功');
     }
 
     const { username, password } = req.body;
+    console.log('接收到的数据:', { username, password: password ? '***' : 'undefined' });
 
     // 验证参数
     if (!username || !password) {
@@ -41,13 +48,19 @@ module.exports = async (req, res) => {
       return res.json({ code: 1, msg: '用户名或密码错误' });
     }
 
+    console.log('用户登录成功:', username);
     res.json({ 
       code: 0, 
       msg: '登录成功',
       username: user.username
     });
   } catch (error) {
-    console.error('登录错误:', error);
-    res.status(500).json({ code: 1, msg: '服务器错误: ' + error.message });
+    console.error('登录错误详情:', error);
+    console.error('错误堆栈:', error.stack);
+    res.status(500).json({ 
+      code: 1, 
+      msg: '服务器错误: ' + error.message,
+      details: error.stack
+    });
   }
 }; 
