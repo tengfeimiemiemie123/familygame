@@ -13,7 +13,8 @@
     <div class="board">
       <table>
         <tr v-for="(row, i) in board" :key="i">
-          <td v-for="(cell, j) in row" :key="j">
+          <td v-for="(cell, j) in row" :key="j"
+            :style="getTdStyle(i, j)">
             <input
               v-model="userBoard[i][j]"
               :readonly="!!initBoard[i][j]"
@@ -120,6 +121,42 @@ function checkResult() {
   msgColor.value = 'green';
   emit('finishGame', { difficulty: difficulty.value, time: time.value });
 }
+
+function getTdStyle(i, j) {
+  // 3x3宫格加粗
+  return {
+    'border-top': i % 3 === 0 ? '2px solid #333' : '',
+    'border-left': j % 3 === 0 ? '2px solid #333' : '',
+    'border-right': j === 8 ? '2px solid #333' : '',
+    'border-bottom': i === 8 ? '2px solid #333' : ''
+  };
+}
+// 测试用：只留一个空位
+function setTestBoard() {
+  const full = [
+    [5,3,4,6,7,8,9,1,2],
+    [6,7,2,1,9,5,3,4,8],
+    [1,9,8,3,4,2,5,6,7],
+    [8,5,9,7,6,1,4,2,3],
+    [4,2,6,8,5,3,7,9,1],
+    [7,1,3,9,2,4,8,5,6],
+    [9,6,1,5,3,7,2,8,4],
+    [2,8,7,4,1,9,6,3,5],
+    [3,4,5,2,8,6,1,7,9]
+  ];
+  const puzzle = JSON.parse(JSON.stringify(full));
+  // 随机挖一个空
+  const i = Math.floor(Math.random()*9);
+  const j = Math.floor(Math.random()*9);
+  puzzle[i][j] = '';
+  board.value = full;
+  initBoard.value = puzzle;
+  userBoard.value = puzzle.map(row => row.slice());
+  msg.value = '';
+  startTimer();
+}
+// 导出setTestBoard供父组件调用
+defineExpose({ setTestBoard });
 
 onMounted(resetGame);
 watch(difficulty, resetGame);
