@@ -1,8 +1,4 @@
-const mongoose = require('mongoose');
-const User = require('./models');
-
-// MongoDB 连接 URI
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://tengfei726:AxGmXE7vQQM41MMR@cluster0.06h3msu.mongodb.net/familygame?retryWrites=true&w=majority&appName=Cluster0';
+const { connectDB, User } = require('./models');
 
 module.exports = async (req, res) => {
   console.log('收到请求，方法:', req.method);
@@ -30,14 +26,9 @@ module.exports = async (req, res) => {
 
   try {
     console.log('开始处理注册请求...');
-    console.log('环境变量 MONGODB_URI:', process.env.MONGODB_URI ? '已设置' : '未设置');
-
+    
     // 连接数据库
-    if (!mongoose.connections[0].readyState) {
-      console.log('正在连接数据库...');
-      await mongoose.connect(MONGODB_URI);
-      console.log('数据库连接成功');
-    }
+    await connectDB();
 
     // 解析请求体
     const { username, password } = req.body || {};
