@@ -490,6 +490,18 @@ class SudokuGame {
 let currentUser = localStorage.getItem('sudoku_user') || '';
 let pendingRecord = null;
 
+function updateUserInfoUI() {
+  const label = document.getElementById('user-info-label');
+  const btn = document.getElementById('user-login-btn');
+  if (currentUser) {
+    label.textContent = `当前用户：${currentUser}`;
+    btn.textContent = '登出';
+  } else {
+    label.textContent = '未登录';
+    btn.textContent = '登录';
+  }
+}
+
 // 弹窗控制
 function showUserModal(msg = '') {
   document.getElementById('user-modal').style.display = 'flex';
@@ -535,8 +547,9 @@ async function apiRank() {
   return await res.json();
 }
 
-// 绑定弹窗按钮
+// 绑定弹窗按钮和用户按钮
 window.addEventListener('DOMContentLoaded', () => {
+  updateUserInfoUI();
   document.getElementById('login-btn').onclick = async function() {
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value;
@@ -544,6 +557,7 @@ window.addEventListener('DOMContentLoaded', () => {
       await apiLogin(username, password);
       currentUser = username;
       localStorage.setItem('sudoku_user', username);
+      updateUserInfoUI();
       hideUserModal();
       if (pendingRecord) {
         await uploadRecordAndShowRank(...pendingRecord);
@@ -560,6 +574,7 @@ window.addEventListener('DOMContentLoaded', () => {
       await apiRegister(username, password);
       currentUser = username;
       localStorage.setItem('sudoku_user', username);
+      updateUserInfoUI();
       hideUserModal();
       if (pendingRecord) {
         await uploadRecordAndShowRank(...pendingRecord);
@@ -570,6 +585,23 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   };
   document.getElementById('close-rank').onclick = hideRankModal;
+  document.getElementById('rank-btn').onclick = async function() {
+    // 随时查看排行榜
+    const rank = await apiRank();
+    renderRankList(rank, currentUser);
+    showRankModal();
+  };
+  document.getElementById('user-login-btn').onclick = function() {
+    if (currentUser) {
+      // 登出
+      currentUser = '';
+      localStorage.removeItem('sudoku_user');
+      updateUserInfoUI();
+    } else {
+      // 手动登录
+      showUserModal();
+    }
+  };
 });
 
 // 上传成绩并展示排行榜
@@ -587,7 +619,7 @@ function renderRankList(rank, user) {
   });
   html += '</table>';
   document.getElementById('rank-list').innerHTML = html;
-} 
+}
 
 // 重新初始化游戏
 window.addEventListener('DOMContentLoaded', () => {

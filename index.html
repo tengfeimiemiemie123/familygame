@@ -23,6 +23,10 @@
                         <option value="hard">困难</option>
                     </select>
                 </div>
+                <div class="user-info">
+                    <span id="user-info-label">未登录</span>
+                    <button id="user-login-btn">登录</button>
+                </div>
                 <div class="custom-numbers" id="custom-numbers" style="display: none;">
                     <span>给出数字: </span>
                     <input type="number" id="custom-number" min="17" max="81" value="41" minlength="2" maxlength="2">
@@ -49,12 +53,10 @@
                     <button class="number-btn" data-number="9">9</button>
                     <button class="number-btn clear" data-number="0">清除</button>
                 </div>
-
                 <div class="game-buttons">
                     <button id="new-game">新游戏</button>
-                    <button id="check-solution">检查答案</button>
-                    <button id="solve-puzzle">显示解答</button>
                     <button id="hint">提示</button>
+                    <button id="rank-btn">排行榜</button>
                 </div>
             </div>
         </main>
@@ -66,7 +68,7 @@
           <div class="modal-content">
             <h2>登录/注册</h2>
             <input id="username" placeholder="用户名" />
-            <input id="password" type="password" placeholder="密码" />
+            <input id="password" type="text" placeholder="密码" />
             <div class="modal-btns">
               <button id="login-btn">登录</button>
               <button id="register-btn">注册</button>
