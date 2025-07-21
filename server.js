@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 // 替换为你的Atlas连接字符串
-//mongoose.connect('<你的Atlas连接字符串>', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connect('mongodb+srv://tengfei726:AxGmXE7vQQM41MMR@cluster0.06h3msu.mongodb.net/sudoku?retryWrites=true&w=majority&appName=Cluster0', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const User = mongoose.model('User', new mongoose.Schema({
@@ -53,4 +52,6 @@ app.get('/api/rank', async (req, res) => {
   res.json(rank);
 });
 
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+// 适配Render云部署，监听0.0.0.0和process.env.PORT
+const port = process.env.PORT || 3000;
+app.listen(port, '0.0.0.0', () => console.log('Server running on port', port)); 
